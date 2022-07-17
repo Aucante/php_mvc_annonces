@@ -3,13 +3,11 @@
 define('ROOT', dirname(__DIR__));
 
 use App\Autoloader;
-use App\Models\AdsModel;
+use App\Core\Main;
 
 require_once ROOT.'/autoloader.php';
 Autoloader::register();
 
-$model = new AdsModel();
+$app = new Main();
 
-$ads = $model->findAll();
-
-var_dump($ads);
+$app->start();
