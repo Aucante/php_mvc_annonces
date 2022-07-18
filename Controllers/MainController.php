@@ -4,9 +4,9 @@ namespace App\Controllers;
 
 class MainController extends Controller
 {
-    public function index(array $params)
+    public function index()
     {
-        var_dump($params);
-        echo 'ok1';
+
+        $this->render('main/index', [], 'home');
     }
 }
