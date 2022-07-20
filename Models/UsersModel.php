@@ -14,6 +14,17 @@ class UsersModel extends Model
         $this->table = strtolower(str_replace('Model', '', $class));
     }
 
+
+    /**
+     * Select user from his mail
+     * @param string $email
+     * @return false|\PDOStatement
+     */
+    public function findOneByEmail(string $email)
+    {
+        return $this->req("SELECT * FROM {$this->table} WHERE email = ?", [$email])->fetch();
+    }
+
     /**
      * @return int
      */
