@@ -36,13 +36,13 @@ class Model extends Db
         return $this->req("SELECT * FROM {$this->table} WHERE id = $id")->fetch();
     }
 
-    public function create(Model $model)
+    public function create()
     {
         $keys = [];
         $inter = [];
         $values = [];
 
-        foreach($model as $key => $value){
+        foreach($this as $key => $value){
             if ($value !== null && $key != 'db' && $key != 'table'){
                 $keys[] = $key;
                 $inter[] = "?";
@@ -57,20 +57,20 @@ class Model extends Db
         return $this->req('INSERT INTO ' . $this->table . ' (' . $keys_list . ') VALUES (' . $inter_list . ')', $values);
     }
 
-    public function update(int $id, Model $model)
+    public function update()
     {
         $keys = [];
         $values = [];
 
         // On boucle pour éclater le tableau
-        foreach($model as $key => $value){
+        foreach($this as $key => $value){
             // UPDATE annonces SET titre = ?, description = ?, actif = ? WHERE id= ?
             if($value !== null && $key != 'db' && $key != 'table'){
                 $keys[] = "$key = ?";
                 $values[] = $value;
             }
         }
-        $values[] = $id;
+        $values[] = $this->id;
 
         // On transforme le tableau "champs" en une chaine de caractères
         $keys_list = implode(', ', $keys);
@@ -96,7 +96,7 @@ class Model extends Db
         }
     }
 
-    public function hydrate(array $data): Model
+    public function hydrate($data): Model
     {
         foreach ($data as $key => $value){
             $setter = 'set' . ucfirst($key);
