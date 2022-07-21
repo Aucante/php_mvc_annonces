@@ -12,6 +12,32 @@ class UsersController extends Controller
      * Connection users
      */
     public function login(){
+        // Check if form is filled
+
+        if (Form::validate($_POST, ['email', 'password'])){
+            $userModel = new UsersModel;
+            $userArray = $userModel->findOneByEmail(strip_tags($_POST['email']));
+
+            if (!$userArray){
+                $_SESSION['error'] = 'L\'addresse e-mail et/ou le mot de passe est incorrect1';
+                header('Location: /users/login');
+                exit();
+            }
+
+            $user = $userModel->hydrate($userArray);
+
+            if (password_verify($_POST['password'], $user->getPassword())){
+                $user->setSession();
+                header('Location: /');
+                exit();
+            }else{
+                $_SESSION['error'] = 'L\'addresse e-mail et/ou le mot de passe est incorrect2';
+                header('Location: /ads');
+                exit();
+            }
+
+        }
+
         $form = new Form();
 
         $form->startForm()
@@ -53,5 +79,15 @@ class UsersController extends Controller
             ->endForm();
 
         $this->render('users/registration', ['registerForm' => $form->create()]);
+    }
+
+    /**
+     * Logout user
+     * @return exit
+     */
+    public function logout(){
+        unset($_SESSION['user']);
+        header('Location: '. $_SERVER['HTTP_REFERER']);
+        exit;
     }
 }

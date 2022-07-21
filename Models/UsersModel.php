@@ -26,12 +26,24 @@ class UsersModel extends Model
     }
 
     /**
+     * Create user session
+     * @return void
+     */
+    public function setSession(){
+        $_SESSION['user'] = [
+            'email' => $this->email
+        ];
+    }
+
+
+    /**
      * @return int
      */
     public function getId(): int
     {
         return $this->id;
     }
+
 
     /**
      * @return string

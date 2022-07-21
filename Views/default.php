@@ -21,8 +21,22 @@
                         <a class="nav-link" aria-current="page" href="/">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Liste annonces</a>
+                        <a class="nav-link" href="/ads">Liste annonces</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['email'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="users/profile">Profil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="/users/logout">Deconnexion</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/users/login">Connexion</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
