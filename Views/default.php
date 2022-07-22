@@ -27,6 +27,9 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['email'])): ?>
                         <li class="nav-item">
+                            <a class="nav-link" href="ads/add">Ajouter</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="users/profile">Profil</a>
                         </li>
                         <li class="nav-item">
@@ -43,6 +46,16 @@
     </nav>
 
     <div class="container">
+        <?php if(!empty($_SESSION['error'])): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+            </div>
+        <?php endif; ?>
+        <?php if(!empty($_SESSION['message'])): ?>
+            <div class="alert alert-success" role="alert">
+                <?php echo $_SESSION['message']; unset($_SESSION['message']); ?>
+            </div>
+        <?php endif; ?>
         <?= $content ?>
     </div>
 
