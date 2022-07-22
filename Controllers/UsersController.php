@@ -32,7 +32,7 @@ class UsersController extends Controller
                 exit();
             }else{
                 $_SESSION['error'] = 'L\'addresse e-mail et/ou le mot de passe est incorrect2';
-                header('Location: /ads');
+                header('Location: /users/login');
                 exit();
             }
 

@@ -9,6 +9,9 @@ class AdsModel extends Model
     protected string $description;
     protected \DateTime $created_at;
     protected int $active;
+    protected int $users_id;
+
+
 
     public function __construct()
     {
@@ -21,6 +24,18 @@ class AdsModel extends Model
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * Définir la valeur de id
+     *
+     * @return  self
+     */
+    public function setId(int $id):self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -91,6 +106,24 @@ class AdsModel extends Model
     public function setActive(int $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUsersId(): int
+    {
+        return $this->users_id;
+    }
+
+    /**
+     * @return self
+     */
+    public function setUsersId(int $users_id): self
+    {
+        $this->users_id = $users_id;
 
         return $this;
     }

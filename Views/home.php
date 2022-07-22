@@ -12,6 +12,11 @@
 
 
     <div class="container">
+        <?php if(!empty($_SESSION['message'])): ?>
+            <div class="alert alert-success" role="alert">
+                <?php echo $_SESSION['message']; unset($_SESSION['message']); ?>
+            </div>
+        <?php endif; ?>
         <?= $content ?>
     </div>
     <div class="text-center">
