@@ -44,6 +44,18 @@ class UsersModel extends Model
         return $this->id;
     }
 
+    /**
+     * Définir la valeur de id
+     *
+     * @return  self
+     */
+    public function setId(int $id):self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
 
     /**
      * @return string
