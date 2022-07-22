@@ -48,7 +48,7 @@ class Form
                 $str .= " $attribute";
             }else{
                 // add attribute='valeur'
-                $str .= " $attribute='$value'";
+                $str .= " $attribute=\"$value\"";
             }
         }
         return $str;
@@ -143,7 +143,7 @@ class Form
 
         // Add options
         foreach ($options as $value => $text){
-            $this->formCode .= "<option value='$value'>$text</option>";
+            $this->formCode .= "<option value=\"$value\">$text</option>";
         }
 
         // Close select

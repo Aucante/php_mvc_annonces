@@ -59,16 +59,18 @@ class AdsController extends Controller
                 header('Location: /');
                 exit();
             }else{
-
+                $_SESSION['error'] = !empty($_POST) ? "Le formulaire est incomplet" : "";
+                $title = isset($_POST['title']) ? strip_tags($_POST['title']) : '';
+                $description = isset($_POST['description']) ? strip_tags($_POST['description']) : '';
             }
 
             $form = new Form();
 
             $form->startForm()
                 ->addLabelFor('title', 'Titre de l\'annonce')
-                ->addInput('text', 'title', ['id' => 'titre', 'class' => 'form-control'])
+                ->addInput('text', 'title', ['id' => 'titre', 'class' => 'form-control', 'value' => $title])
                 ->addLabelFor('description', 'Texte de l\'annonce')
-                ->addInput('text', 'description', ['id' => 'description', 'class' => 'form-control'])
+                ->addInput('text', 'description', ['id' => 'description', 'class' => 'form-control', 'value' => $description])
                 ->addButton('Valider', ['class' => 'btn btn-primary mt-2'])
             ;
             $this->render('ads/add', ['form' => $form->create()]);
@@ -76,6 +78,72 @@ class AdsController extends Controller
             $_SESSION['error'] = "Vous devez être connecté pour accéder à cette page";
             header("Location: /users/login");
             exit();
+        }
+    }
+
+    /**
+     * Update ad
+     * @param int $id
+     */
+    public function update(int $id){
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['email'])){
+            $adsModel = new AdsModel();
+
+            $ad = $adsModel->findById($id);
+
+            if (!$ad) {
+                http_response_code(404);
+                $_SESSION['error'] = "L'annonce recherchée n'existe pas";
+                header('Location: /ads');
+                exit;
+            }
+
+            $userModel = new UsersModel();
+            $user = $userModel->findOneByEmail(strip_tags($_SESSION['user']['email']));
+            $userModel->hydrate($user);
+
+
+            if ((int)$ad->users_id !== $userModel->getId()){
+                $_SESSION['error'] = "Vous n'avez pas accès à cette page";
+                header('Location: /ads');
+                exit();
+            }
+
+            // Processing form
+            if (Form::validate($_POST, ['title', 'description'])){
+                $title = strip_tags($_POST['title']);
+                $description = strip_tags($_POST['description']);
+
+                $adEdit = new AdsModel();
+                $adEdit->setId($ad->id)
+                    ->setTitle($title)
+                    ->setDescription($description);
+
+                $adEdit->update();
+
+                // Redirect
+                $_SESSION['message'] = "Votre annonce a été ajoutée avec succès";
+                header('Location: /');
+                exit();
+            }
+
+
+            $form = new Form();
+
+            $form->startForm()
+                ->addLabelFor('title', 'Titre de l\'annonce')
+                ->addInput('text', 'title', ['id' => 'titre', 'class' => 'form-control', 'value' => $ad->title] )
+                ->addLabelFor('description', 'Texte de l\'annonce')
+                ->addInput('text', 'description', ['id' => 'description', 'class' => 'form-control', 'value' => $ad->description])
+                ->addButton('Valider', ['class' => 'btn btn-primary mt-2'])
+            ;
+
+            $this->render('ads/update', ['form' => $form->create()]);
+
+        }else{
+            $_SESSION['erreur'] = "Vous devez vous connecter pour ajouter une annonce";
+            header('Location: /users/login');
+            exit;
         }
     }
 }
