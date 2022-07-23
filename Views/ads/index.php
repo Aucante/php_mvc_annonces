@@ -5,4 +5,5 @@
         <p><?= $ad->description ?></p>
     </article>
     <a href="/ads/update/<?= $ad->id ?>" class="btn btn-primary">Modifier</a>
+
 <?php endforeach; ?>
